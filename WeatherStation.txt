@@ -1,0 +1,54 @@
+package WeatherStation;
+
+public class weather_station {
+	int temperature,humidity,pressure;
+	public weather_station(int t,int h,int p)
+	{
+		this.temperature=t;
+		this.humidity=h;
+		this.pressure=p;
+	}
+	
+	public void MeasurementsChanged()
+	{
+		System.out.println("Temperature: "+ temperature +"\nHumidity: "+ humidity+"\nPressure: "+ pressure);
+	}
+	
+	public void setMeasurements(int t,int h,int p)
+	{
+		temperature=t;
+		humidity=h;
+		pressure=p;
+	}
+	
+	public void getTemperature()
+	{
+		System.out.println("Temperature: "+ temperature);
+	}
+	
+	public void getHumidity()
+	{
+		System.out.println("Humidity: "+ humidity);
+	}
+	
+	public void getPressure()
+	{
+		System.out.println("Pressure: "+ pressure);
+	}
+	
+}
+
+package WeatherStation;
+
+public class Main {
+	public static void main(String args[])
+	{
+		weather_station w1=new weather_station(10,7,5);
+		w1.getTemperature();
+		w1.getHumidity();
+		w1.getPressure();
+		w1.setMeasurements(9, 8, 6);
+		w1.MeasurementsChanged();
+	}
+
+}

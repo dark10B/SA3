@@ -1,0 +1,159 @@
+package Command;
+public interface Command {
+	public void execute();
+	public void undo();
+}
+
+
+package Command;
+public class NoCommand implements Command {
+	public void execute()
+	{
+	}
+	public void undo()
+	{
+	}
+}
+
+package Command;
+public class CeilingFan {
+	public static final int OFF=0;
+	public static final int LOW=1;
+	
+	String location;
+	int speed;
+	
+	public CeilingFan(String location)
+	{
+		this.location=location;
+		speed=OFF;
+	}
+	
+	public void off()
+	{
+		speed=OFF;
+		System.out.println(location + "Fan is OFF.");
+	}
+	public void low()
+	{
+		speed=LOW;
+		System.out.println(location+ "Fan is Low.");
+	}
+	
+	public int getSpeed()
+	{
+		return speed;
+	}
+}
+
+package Command;
+public class CeilingFanoff implements Command
+{
+	CeilingFan ceilingFan;
+	int prevSpeed;
+	public CeilingFanoff(CeilingFan ceilingFan) 
+	{
+		this.ceilingFan=ceilingFan;
+	}
+
+	public void execute() 
+	{
+		prevSpeed=ceilingFan.getSpeed();
+		ceilingFan.off();
+	}
+
+	public void undo() 
+	{
+		if (prevSpeed== ceilingFan.OFF)
+			ceilingFan.off();
+		else if(prevSpeed==CeilingFan.LOW)
+			ceilingFan.low();
+	}
+}
+
+package Command;
+public class CeilingFanlow implements Command
+{
+	CeilingFan ceilingFan;
+	int prevSpeed;
+	public CeilingFanlow(CeilingFan ceilingFan) 
+	{
+		this.ceilingFan=ceilingFan;
+	}
+
+	public void execute() 
+	{
+		prevSpeed=ceilingFan.getSpeed();
+		ceilingFan.low();
+	}
+
+	public void undo() 
+	{
+		if (prevSpeed== ceilingFan.OFF)
+			ceilingFan.off();
+		else if(prevSpeed==CeilingFan.LOW)
+			ceilingFan.low();
+	}
+}
+
+package Command;
+public class RemoteControl 
+{
+	Command[] onCommands;
+	Command[] offCommands;
+	Command undoCommands;
+	
+	public RemoteControl() 
+	{
+		onCommands=new Command[5];
+		offCommands=new Command[5];
+		Command noCommand=new NoCommand();
+		
+		for(int i=0;i<5;i++)
+		{
+			onCommands[i]= noCommand;
+			offCommands[i]=noCommand;
+		}
+		undoCommands=noCommand;
+	}
+	
+	public void setCommand(int slot,Command onCommand,Command offCommand)
+	{
+		onCommands[slot]=onCommand;
+		offCommands[slot]=offCommand;
+	}
+	
+	public void onButtonPushed(int slot)
+	{
+		onCommands[slot].execute();
+		undoCommands=onCommands[slot];
+	}
+	public void offButtonPushed(int slot)
+	{
+		offCommands[slot].execute();
+		undoCommands=offCommands[slot];
+	}
+	
+	public void undoButtonPushed()
+	{
+		undoCommands.undo();
+	}
+}
+
+package Command;
+public class RemoteLoader {
+	public static void main(String args[])
+	{
+		RemoteControl rc=new RemoteControl();
+		CeilingFan cf=new CeilingFan("Living Room");
+		
+		CeilingFanoff cfoff=new CeilingFanoff(cf);
+		CeilingFanlow cflow=new CeilingFanlow(cf);
+		
+		rc.setCommand(0, cflow, cfoff);
+		
+		rc.onButtonPushed(0);
+		rc.offButtonPushed(0);
+		rc.undoButtonPushed();
+	}
+}

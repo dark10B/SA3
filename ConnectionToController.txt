@@ -1,0 +1,165 @@
+package ConnectionToController;
+public interface Connection {
+	public void open();
+	public void close();
+	public void log();
+	public void update();
+
+}
+
+package ConnectionToController;
+public class Accounting implements Connection{
+
+	@Override
+	public void open() {
+		System.out.println("Open Database for Accounting");
+		
+	}
+
+	@Override
+	public void close() {
+		System.out.println("Close Database for Accounting");
+		
+	}
+
+	@Override
+	public void log() {
+		System.out.println("Log Activities");
+		
+	}
+
+	@Override
+	public void update() {
+		System.out.println("Accounting has benn updated");
+	}
+}
+
+package ConnectionToController;
+public class Sales implements Connection{
+
+	@Override
+	public void open() {
+		System.out.println("Open Database for Sales");
+		
+	}
+
+	@Override
+	public void close() {
+		System.out.println("Close Database for Sales");
+		
+	}
+
+	@Override
+	public void log() {
+		System.out.println("Log Activities");
+		
+	}
+
+	@Override
+	public void update() {
+		System.out.println("Sales has benn updated");
+	}
+
+}
+
+package ConnectionToController;
+public class Management implements Connection{
+
+	@Override
+	public void open() {
+		System.out.println("Open Database for Management");
+		
+	}
+
+	@Override
+	public void close() {
+		System.out.println("Close Database for Management");
+		
+	}
+
+	@Override
+	public void log() {
+		System.out.println("Log Activities");
+		
+	}
+
+	@Override
+	public void update() {
+		System.out.println("Management has benn updated");
+	}
+
+}
+
+package ConnectionToController;
+
+public class Controller {
+	public static Connection conn;
+	public static Accounting acc;
+	public static Sales sales;
+	public static Management mng;
+	
+	Controller()
+	{
+		acc=new Accounting();
+		sales=new Sales();
+		mng=new Management();
+	}
+	
+	public void setAccountingConnection()
+	{
+		conn=acc;
+	}
+	public void setSalesConnection()
+	{
+		conn=sales;
+	}
+	public void setManagementConnection()
+	{
+		conn=mng;
+	}
+	
+	public void open()
+	{
+		conn.open();
+	}
+	public void close()
+	{
+		conn.close();
+	}
+	public void log()
+	{
+		conn.log();
+	}
+	public void update()
+	{
+		conn.update();
+	}
+}
+
+package ConnectionToController;
+
+public class Demo {
+	Controller controller;
+	Demo(String con)
+	{
+		controller=new Controller();
+		if(con.equalsIgnoreCase("Accounting"))
+			controller.setAccountingConnection();
+		if(con.equalsIgnoreCase("Sales"))
+			controller.setSalesConnection();
+		if(con.equalsIgnoreCase("Managment"))
+			controller.setManagementConnection();
+		
+		controller.open();
+		controller.close();
+		controller.log();
+		controller.update();
+	}
+	
+	
+	public static void main(String args[])
+	{
+		String c="accounting";
+		new Demo(c);
+	}
+}

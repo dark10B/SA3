@@ -1,0 +1,66 @@
+package Adaptor;
+import java.util.Enumeration;
+import java.util.Vector;
+
+public class EnumProduct {
+	private Vector product;
+	public EnumProduct()
+	{
+		System.out.println("implementing adaptor pattern for enumeration");
+		product=new Vector();
+		setProduct("Product A: Laptop");
+		setProduct("Product B: Mobile");
+		setProduct("Product C: Tablet");
+		setProduct("Product D: Router");
+	}
+	
+	public void setProduct(String s)
+	{
+		product.add(s);
+	}
+	
+	public Enumeration getProduct()
+	{
+		Enumeration eproduct=product.elements();
+		return eproduct;
+	}
+}
+
+package Adaptor;
+import java.util.Enumeration;
+import java.util.Iterator;
+
+public class EnumToIteratorAdaptor implements Iterator{
+	
+	Enumeration enumA;
+	public EnumToIteratorAdaptor(Enumeration e)
+	{
+		enumA=e;
+	}
+
+	public boolean hasNext() {
+		return enumA.hasMoreElements();
+	}
+
+	public Object next() {
+		return enumA.nextElement();
+	}
+}
+
+package Adaptor;
+import java.util.Iterator;
+
+public class Product {
+	public void displayProduct(Iterator i)
+	{
+		for(;i.hasNext();)
+			System.out.println(i.next());
+	}
+	public static void main(String args[])
+	{
+		Product product=new Product();
+		EnumProduct enumproduct = new EnumProduct();
+		EnumToIteratorAdaptor eumToiter = new EnumToIteratorAdaptor(enumproduct.getProduct());
+		product.displayProduct(eumToiter);
+	}
+}

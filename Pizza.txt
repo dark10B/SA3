@@ -1,0 +1,87 @@
+package pizza;
+import java.util.ArrayList;
+public class Pizza {
+	String name;
+	String dough;
+	String sauce;
+	ArrayList<String> toppings=new ArrayList<String>();
+	void prepare()
+	{
+		System.out.println("Prepare "+name);
+		System.out.println("Tossing Dough...");
+		System.out.println("Adding Sauce...");
+		System.out.println("Adding Toppings:...");
+		for(String topping : toppings )
+		{
+			System.out.println(" "+topping);
+		}
+	}
+	
+	void bake()
+	{
+		System.out.println("Bake for 25 minutes at 350");
+	}
+	
+	void cut()
+	{
+		System.out.println("Cut the pizza into diagonal slices");
+	}
+	
+	void box()
+	{
+		System.out.println("Place pizza in official Pizzastore box");
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
+}
+
+package pizza;
+public abstract class PizzaStore {
+	abstract Pizza createPizza(String item);
+	public Pizza orderpizza(String type)
+	{
+		Pizza pizza=createPizza(type);
+		System.out.println("--- Making a "+pizza.getName()+" ---");
+		pizza.prepare();
+		pizza.bake();
+		pizza.cut();
+		pizza.box();
+		return pizza;
+	}
+}
+
+package pizza;
+public class ChicagoPizzaStore extends PizzaStore{
+	Pizza createPizza(String item)
+	{
+		if(item.equals("cheese"))
+		{
+			return new ChicagoStyleCheesePizza();
+		}
+		else return null;
+	}
+}
+
+package pizza;
+public class ChicagoStyleCheesePizza extends Pizza{
+	public ChicagoStyleCheesePizza()
+	{
+		name="Chicago Style Cheese PIzza";
+		dough="Thin Crust Dough";
+		sauce="Marirana Sauce";
+		
+		toppings.add("Grated Ragggiano Cheese");
+	}
+}
+
+package pizza;
+public class PizzaTestDrive {
+	public static void main(String args[])
+	{
+		PizzaStore chicagoStore=new ChicagoPizzaStore();
+		Pizza pizza=chicagoStore.orderpizza("cheese");
+	}
+}
